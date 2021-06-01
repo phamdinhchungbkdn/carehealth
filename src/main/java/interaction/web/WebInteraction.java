@@ -58,7 +58,7 @@ public class WebInteraction extends SelectElementByType {
     }
 
     public static void waitForElementPresent(WebDriver driver, SelectorType type, String locator, String... dynamicValue) {
-        locator = String.format(locator, (Object) dynamicValue);
+        locator = String.format(locator, (Object[]) dynamicValue);
         WebDriverWait wait = new WebDriverWait(driver, longTimeout);
         wait.until(ExpectedConditions.presenceOfElementLocated(getBy(type, locator)));
     }
@@ -78,7 +78,7 @@ public class WebInteraction extends SelectElementByType {
     }
 
     public static void waitForElementVisible(WebDriver driver, SelectorType type, String locator, String... dynamicValue) {
-        locator = String.format(locator, (Object) dynamicValue);
+        locator = String.format(locator, (Object[]) dynamicValue);
         WebDriverWait wait = new WebDriverWait(driver, longTimeout);
         try {
             wait.until(ExpectedConditions.visibilityOf(driver.findElement(getBy(type, locator))));
@@ -94,7 +94,7 @@ public class WebInteraction extends SelectElementByType {
     }
 
     public static void waitForElementInvisible(WebDriver driver, SelectorType type, String locator, String... dynamicValue) {
-        locator = String.format(locator, (Object) dynamicValue);
+        locator = String.format(locator, (Object[]) dynamicValue);
         WebDriverWait wait = new WebDriverWait(driver, longTimeout);
         overrideGlobalTimeout(driver, shortTimeout);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(getBy(type, locator)));
@@ -107,7 +107,7 @@ public class WebInteraction extends SelectElementByType {
     }
 
     public static void waitForElementClickable(WebDriver driver, SelectorType type, String locator, String... dynamicValue) {
-        locator = String.format(locator, (Object) dynamicValue);
+        locator = String.format(locator, (Object[]) dynamicValue);
         WebDriverWait wait = new WebDriverWait(driver, longTimeout);
         wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(getBy(type, locator))));
     }
@@ -121,7 +121,7 @@ public class WebInteraction extends SelectElementByType {
     }
 
     public static void clickOnElement(WebDriver driver, SelectorType type, String locator, String... dynamicValue) {
-        locator = String.format(locator, (Object) dynamicValue);
+        locator = String.format(locator, (Object[]) dynamicValue);
         WebElement element = driver.findElement(getBy(type, locator));
         element.click();
     }
@@ -141,7 +141,7 @@ public class WebInteraction extends SelectElementByType {
     }
 
     public static void enterToElement(WebDriver driver, SelectorType type, String locator, String valueToSend, String... dynamicValue) {
-        locator = String.format(locator, (Object) dynamicValue);
+        locator = String.format(locator, (Object[]) dynamicValue);
         WebElement element = driver.findElement(getBy(type, locator));
         element.clear();
         element.sendKeys(valueToSend);
@@ -156,7 +156,7 @@ public class WebInteraction extends SelectElementByType {
     }
 
     public static String getTextOfElement(WebDriver driver, SelectorType type, String locator, String... dynamicValue) {
-        locator = String.format(locator, (Object) dynamicValue);
+        locator = String.format(locator, (Object[]) dynamicValue);
         WebElement element = driver.findElement(getBy(type, locator));
         return element.getText();
     }
@@ -200,6 +200,25 @@ public class WebInteraction extends SelectElementByType {
         action.keyUp(key).perform();
     }
 
+    public static void hoverOnElement(WebDriver driver, SelectorType type, String locator) {
+        WebElement element = driver.findElement(getBy(type, locator));
+        Actions action = new Actions(driver);
+        action.moveToElement(element).perform();
+    }
+
+    public static void hoverOnElement(WebDriver driver, SelectorType type, String locator, String... dynamicValue) {
+        locator = String.format(locator, (Object[]) dynamicValue);
+        WebElement element = driver.findElement(getBy(type, locator));
+        Actions action = new Actions(driver);
+        action.moveToElement(element).perform();
+    }
+
+    public static void hoverOnElementByPosition(WebDriver driver, SelectorType type, String locator, String position) {
+        List<WebElement> elementList = driver.findElements(getBy(type, locator));
+        Actions action = new Actions(driver);
+        action.moveToElement(elementList.get(Integer.parseInt(position)-1)).perform();
+    }
+
     /**
      * Select value in drop down
      */
@@ -207,7 +226,12 @@ public class WebInteraction extends SelectElementByType {
         WebElement element = driver.findElement(getBy(type, locator));
         Select select = new Select(element);
         select.selectByValue(value);
+    }
 
+    public static void selectDropdownText(WebDriver driver, SelectorType type, String locator, String text) {
+        WebElement element = driver.findElement(getBy(type, locator));
+        Select select = new Select(element);
+        select.selectByVisibleText(text);
     }
 
     /**
@@ -235,4 +259,5 @@ public class WebInteraction extends SelectElementByType {
             return false;
         }
     }
+
 }
