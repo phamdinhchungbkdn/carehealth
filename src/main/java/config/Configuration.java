@@ -39,4 +39,10 @@ public interface Configuration extends Config {
     @Key("test.data")
     String testData();
 
+    @Key("email")
+    String email();
+
+    @Key("password")
+    String password();
+
 }
