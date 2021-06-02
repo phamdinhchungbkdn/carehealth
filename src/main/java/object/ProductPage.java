@@ -18,7 +18,7 @@ public class ProductPage extends CommonPage {
     }
 
     public void selectSize(String size) {
-        WebInteraction.waitForElementVisible(driver, XPATH, XPATH_SIZE_DROPDOWN);
+        WebInteraction.waitForElementPresent(driver, XPATH, XPATH_SIZE_DROPDOWN);
         WebInteraction.selectDropdownText(driver, XPATH, XPATH_SIZE_DROPDOWN, size);
     }
 
